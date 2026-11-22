@@ -1,6 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Plus, Eye, Truck, Filter } from 'lucide-react';
+import {
+  Plus,
+  Eye,
+  Truck,
+  Filter,
+  FileText,
+  Clock,
+  CheckCircle2,
+  Table as TableIcon,
+  AlignJustify,
+  LayoutGrid,
+  ChevronRight,
+  ChevronDown,
+  MoreVertical,
+  Calendar,
+  Layers,
+  ArrowRight,
+} from 'lucide-react';
 import { dataService } from '@/lib/data-service';
 import { Purchase } from '@/types';
 import { formatCurrency } from '@/utils/currency';
@@ -20,6 +37,8 @@ export const PurchasesView: React.FC = () => {
 
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [viewMode, setViewMode] = useState<'collapsed' | 'expanded' | 'table'>('collapsed');
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(null);
 
@@ -40,11 +59,15 @@ export const PurchasesView: React.FC = () => {
     });
   }, [purchases, search, statusFilter]);
 
-  // Aggregate stats
-  const activePurchases = purchases.filter((p) => p.status !== 'cancelled');
-  const totalProcurement = activePurchases.reduce((sum, p) => sum + p.grand_total, 0);
-  const totalPaid = activePurchases.reduce((sum, p) => sum + p.paid_amount, 0);
-  const totalDue = activePurchases.reduce((sum, p) => sum + p.due_amount, 0);
+  // Aggregate stats matching Screenshot 1
+  const totalPOs = purchases.length;
+  const pendingCount = purchases.filter((p) => p.payment_status === 'unpaid' && p.status !== 'cancelled').length;
+  const partialCount = purchases.filter((p) => p.payment_status === 'partial' && p.status !== 'cancelled').length;
+  const completedCount = purchases.filter((p) => p.payment_status === 'paid' && p.status !== 'cancelled').length;
+
+  const toggleRow = (id: string) => {
+    setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const columns: Column<Purchase>[] = [
     {
@@ -67,7 +90,7 @@ export const PurchasesView: React.FC = () => {
       ),
     },
     {
-      header: 'Date',
+      header: 'Order Date',
       accessorKey: 'purchase_date',
       sortable: true,
       cell: (row) => <span className="text-xs text-slate-600">{formatDate(row.purchase_date)}</span>,
@@ -104,7 +127,7 @@ export const PurchasesView: React.FC = () => {
       ),
     },
     {
-      header: 'Payment',
+      header: 'Payment Status',
       accessorKey: 'payment_status',
       align: 'center',
       cell: (row) => <StatusBadge status={row.payment_status} size="sm" />,
@@ -116,7 +139,7 @@ export const PurchasesView: React.FC = () => {
       cell: (row) => <StatusBadge status={row.status} size="sm" />,
     },
     {
-      header: 'Actions',
+      header: 'Action',
       align: 'right',
       cell: (row) => (
         <button
@@ -124,7 +147,7 @@ export const PurchasesView: React.FC = () => {
             e.stopPropagation();
             setSelectedPurchase(row);
           }}
-          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded transition-colors shadow-2xs"
+          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors shadow-2xs"
         >
           <Eye className="w-3.5 h-3.5" />
           <span>Voucher</span>
@@ -135,71 +158,293 @@ export const PurchasesView: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <PageHeader
-        title="Purchases & Procurement"
-        description="Manage vendor purchase orders, inventory restocking, unit cost records, and supplier payables."
-        breadcrumb="Supply Chain Operations"
-      >
+      {/* Page Header matching Screenshot 1 */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Purchase Orders</h1>
+          <p className="text-xs text-slate-500 mt-1">
+            Manage, verify, and track all inbound supplier purchase orders and stock receipts.
+          </p>
+        </div>
+
         <button
           onClick={() => setIsCreateOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-xs font-medium shadow-xs transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm shadow-emerald-600/25 transition-all self-start sm:self-auto hover:-translate-y-0.5"
         >
-          <Plus className="w-4 h-4" />
-          <span>New Purchase Order</span>
+          <Plus className="w-4 h-4 stroke-[2.5]" />
+          <span>+ New PO</span>
         </button>
-      </PageHeader>
+      </div>
 
-      {/* Mini KPI Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Total Procurement</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-slate-900 mt-1 truncate" title={formatCurrency(totalProcurement)}>{formatCurrency(totalProcurement)}</p>
+      {/* 4 KPI Cards Row matching Screenshot 1 */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold text-slate-400">Total POs</p>
+            <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 font-mono">{totalPOs}</p>
+          </div>
+          <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
+            <FileText className="w-5 h-5 stroke-[2]" />
+          </div>
         </div>
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Settled Payouts</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-slate-800 mt-1 truncate" title={formatCurrency(totalPaid)}>{formatCurrency(totalPaid)}</p>
+
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold text-slate-400">Pending Due</p>
+            <p className="text-2xl sm:text-3xl font-bold text-amber-600 mt-1 font-mono">{pendingCount}</p>
+          </div>
+          <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+            <Clock className="w-5 h-5 stroke-[2]" />
+          </div>
         </div>
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Pending Payables (Due)</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-amber-600 mt-1 truncate" title={formatCurrency(totalDue)}>{formatCurrency(totalDue)}</p>
+
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold text-slate-400">Partially Paid</p>
+            <p className="text-2xl sm:text-3xl font-bold text-purple-600 mt-1 font-mono">{partialCount}</p>
+          </div>
+          <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 border border-purple-100">
+            <Truck className="w-5 h-5 stroke-[2]" />
+          </div>
+        </div>
+
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold text-slate-400">Completed</p>
+            <p className="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1 font-mono">{completedCount}</p>
+          </div>
+          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
+            <CheckCircle2 className="w-5 h-5 stroke-[2]" />
+          </div>
         </div>
       </div>
 
-      {/* Search & Filters */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-2xs">
+      {/* Filter Bar & Segmented View Controls matching Screenshot 1 */}
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-white p-3 border border-slate-200/80 rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+        {/* Left: Search Bar */}
         <SearchInput
           value={search}
           onChange={setSearch}
-          placeholder="Search by PO # or supplier..."
-          className="w-full sm:max-w-xs"
+          placeholder="Search by PO ID or supplier..."
+          className="w-full lg:max-w-md"
         />
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Filter className="w-4 h-4 text-slate-400 hidden sm:block" />
+        {/* Right: Dropdowns & View Switcher */}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Status Select */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-xs bg-slate-50 border border-slate-200 rounded-md px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-slate-900 w-full sm:w-auto"
+            className="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 font-medium focus:outline-none focus:ring-1 focus:ring-emerald-500"
           >
-            <option value="all">All Payment & PO Statuses</option>
-            <option value="paid">Paid in Full</option>
+            <option value="all">All Status</option>
+            <option value="paid">Completed (Paid)</option>
             <option value="partial">Partial Payment</option>
-            <option value="unpaid">Unpaid (Full Due)</option>
+            <option value="unpaid">Pending (Unpaid)</option>
             <option value="cancelled">Cancelled</option>
           </select>
+
+          {/* Segmented View Switcher matching Screenshot 1 */}
+          <div className="inline-flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200/80 text-xs font-medium">
+            <button
+              onClick={() => setViewMode('table')}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                viewMode === 'table'
+                  ? 'bg-slate-900 text-white shadow-2xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <TableIcon className="w-3.5 h-3.5" />
+              <span>Table</span>
+            </button>
+            <button
+              onClick={() => setViewMode('collapsed')}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                viewMode === 'collapsed'
+                  ? 'bg-slate-900 text-white shadow-2xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <AlignJustify className="w-3.5 h-3.5" />
+              <span>Collapsed</span>
+            </button>
+            <button
+              onClick={() => setViewMode('expanded')}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                viewMode === 'expanded'
+                  ? 'bg-slate-900 text-white shadow-2xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>Expanded</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Data Table */}
-      <DataTable
-        columns={columns}
-        data={filteredPurchases}
-        isLoading={isLoading}
-        emptyTitle="No purchase orders found"
-        emptyDescription="Create a purchase order to receive inventory stock from suppliers."
-        onRowClick={(row) => setSelectedPurchase(row)}
-      />
+      {/* Main Content: Table View OR Collapsed/Expanded Card Rows */}
+      {viewMode === 'table' ? (
+        <DataTable
+          columns={columns}
+          data={filteredPurchases}
+          isLoading={isLoading}
+          emptyTitle="No purchase orders found"
+          emptyDescription="Create a purchase order to receive inventory stock from suppliers."
+          onRowClick={(row) => setSelectedPurchase(row)}
+        />
+      ) : (
+        <div className="space-y-3">
+          {filteredPurchases.length === 0 ? (
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-10 text-center text-slate-500">
+              <Truck className="w-10 h-10 mx-auto text-slate-300 mb-2" />
+              <p className="text-sm font-semibold text-slate-800">No purchase orders found</p>
+              <p className="text-xs text-slate-400 mt-1">Try adjusting your search criteria or create a new purchase order.</p>
+            </div>
+          ) : (
+            filteredPurchases.map((po) => {
+              const isExpanded = viewMode === 'expanded' || !!expandedRows[po.id];
+              const itemCount = po.items?.length || 1;
+
+              return (
+                <div
+                  key={po.id}
+                  className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all cursor-pointer group"
+                  onClick={() => toggleRow(po.id)}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    {/* Left: Chevron + PO Number + Badge + Supplier */}
+                    <div className="flex items-start sm:items-center gap-3">
+                      <button
+                        type="button"
+                        className="p-1 rounded-lg text-slate-400 group-hover:text-slate-700 hover:bg-slate-100 transition-colors shrink-0 mt-0.5 sm:mt-0"
+                      >
+                        {isExpanded ? (
+                          <ChevronDown className="w-4 h-4 text-emerald-600" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4" />
+                        )}
+                      </button>
+
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-mono font-bold text-slate-900 text-sm">
+                            {po.invoice_number}
+                          </span>
+                          <StatusBadge status={po.payment_status} size="sm" />
+                          {po.status === 'cancelled' && (
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
+                              Cancelled
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-500 font-medium mt-0.5">
+                          {po.supplier_name}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Right: Meta columns (Total, Items, Delivery Date, Menu) */}
+                    <div className="flex items-center gap-6 sm:gap-8 justify-between sm:justify-end border-t sm:border-t-0 pt-2.5 sm:pt-0 border-slate-100">
+                      <div>
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                          Total Amount
+                        </span>
+                        <span className="font-mono font-bold text-slate-900 text-sm">
+                          {formatCurrency(po.grand_total)}
+                        </span>
+                      </div>
+
+                      <div className="hidden sm:block">
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                          Items
+                        </span>
+                        <span className="font-mono font-semibold text-slate-700 text-sm">
+                          {itemCount}
+                        </span>
+                      </div>
+
+                      <div className="hidden md:block">
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                          Order Date
+                        </span>
+                        <span className="text-xs text-slate-600 font-medium">
+                          {formatDate(po.purchase_date)}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedPurchase(po);
+                        }}
+                        className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                        title="View PO Voucher"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Expanded Line Items Detail Drawer */}
+                  {isExpanded && (
+                    <div
+                      className="mt-4 pt-4 border-t border-slate-100 space-y-3 animate-in fade-in duration-200"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
+                        <span>Line Items Received</span>
+                        <button
+                          onClick={() => setSelectedPurchase(po)}
+                          className="text-emerald-700 hover:text-emerald-800 font-medium inline-flex items-center gap-1"
+                        >
+                          <span>Open Full Voucher</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      <div className="bg-slate-50/70 border border-slate-200/70 rounded-xl overflow-hidden text-xs">
+                        <div className="grid grid-cols-12 gap-2 px-3 py-2 bg-slate-100/60 font-semibold text-slate-600 border-b border-slate-200/60">
+                          <div className="col-span-5">Product Name</div>
+                          <div className="col-span-2 text-right">Quantity</div>
+                          <div className="col-span-2 text-right">Cost Price</div>
+                          <div className="col-span-3 text-right">Subtotal</div>
+                        </div>
+
+                        {po.items && po.items.length > 0 ? (
+                          po.items.map((item, idx) => (
+                            <div
+                              key={idx}
+                              className="grid grid-cols-12 gap-2 px-3 py-2 border-b border-slate-100 last:border-none text-slate-700 items-center"
+                            >
+                              <div className="col-span-5 font-medium text-slate-900 truncate">
+                                {item.product_name}
+                              </div>
+                              <div className="col-span-2 text-right font-mono font-semibold">
+                                {item.quantity}
+                              </div>
+                              <div className="col-span-2 text-right font-mono text-slate-600">
+                                {formatCurrency(item.unit_cost)}
+                              </div>
+                              <div className="col-span-3 text-right font-mono font-bold text-slate-900">
+                                {formatCurrency(item.subtotal || item.quantity * item.unit_cost)}
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="px-3 py-2.5 text-slate-500">
+                            Single batch procurement item • Total: {formatCurrency(po.grand_total)}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
 
       {/* Create Purchase Modal */}
       <CreatePurchaseModal

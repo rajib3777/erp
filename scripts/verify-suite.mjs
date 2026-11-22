@@ -4,7 +4,7 @@
 // ==============================================================================
 
 console.log('------------------------------------------------------------');
-console.log('NEXUS ERP: 10-POINT TECHNICAL RECRUITMENT VERIFICATION SUITE');
+console.log('TOTALLY ERP: 10-POINT TECHNICAL RECRUITMENT VERIFICATION SUITE');
 console.log('Candidate: Software Engineer Assessment');
 console.log('------------------------------------------------------------\n');
 

@@ -103,7 +103,7 @@ export const PurchaseDetailsModal: React.FC<PurchaseDetailsModalProps> = ({
               <div>
                 <h1 className="text-lg font-bold text-slate-900">Purchase Order Voucher</h1>
                 <p className="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">
-                  Receiver: Nexus Trade & Distribution Ltd.
+                  Receiver: Totally Trade & Distribution Ltd.
                   <br />
                   Tejgaon Central Receiving Warehouse, Dhaka
                 </p>

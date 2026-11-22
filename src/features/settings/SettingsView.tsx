@@ -334,11 +334,11 @@ export const SettingsView: React.FC = () => {
       </div>
 
       {/* Interactive 10 Assessment Scenarios Test Runner */}
-      <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-2xs">
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
           <div>
             <h3 className="text-base font-semibold text-slate-900">
-              10-Point Technical Assessment Verification Suite
+              Totally 10-Point Technical Assessment Verification Suite
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
               Automated end-to-end integration tests verifying all 10 scenarios outlined in Section 16 of the Code Bondhu IT assessment.
@@ -348,7 +348,7 @@ export const SettingsView: React.FC = () => {
           <button
             onClick={runAssessmentTestSuite}
             disabled={isRunningTests}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-md text-xs font-semibold shadow-xs transition-colors shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors shrink-0"
           >
             <Play className={`w-3.5 h-3.5 ${isRunningTests ? 'animate-spin' : ''}`} />
             <span>{isRunningTests ? 'Executing Scenarios...' : 'Run All 10 Tests'}</span>

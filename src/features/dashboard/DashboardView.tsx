@@ -85,42 +85,43 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner / Quick Action Bar */}
-      <div className="bg-white border border-slate-200/90 rounded-xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         <div>
-          <span className="text-[11px] font-semibold text-indigo-600 uppercase tracking-wider font-mono">
-            Nexus Commercial Ledger
+          <span className="text-[11px] font-semibold text-emerald-600 uppercase tracking-wider font-mono">
+            Totally Commercial Ledger
           </span>
           <h2 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5">Executive Overview</h2>
           <p className="text-xs text-slate-500 mt-1 max-w-xl leading-relaxed">
-            Real-time balance synchronization across Sales Invoices, Purchase Orders, Warehouses, and Cash Accounts.
+            Totally Cloud ERP Suite: Real-time balance synchronization across Sales Invoices, Purchase Orders, Warehouses, and Cash Accounts.
           </p>
         </div>
         <div className="flex items-center gap-2.5 flex-wrap shrink-0">
           <button
             onClick={onOpenCreateSale}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-medium shadow-xs transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-xs shadow-emerald-600/20 transition-all hover:-translate-y-0.5"
           >
             <ShoppingCart className="w-3.5 h-3.5" />
-            <span>New Sale</span>
+            <span>+ New Sale</span>
           </button>
           <button
             onClick={onOpenCreatePurchase}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-medium shadow-xs transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-xs transition-all hover:-translate-y-0.5"
           >
             <Truck className="w-3.5 h-3.5" />
-            <span>New Purchase</span>
+            <span>+ New Purchase</span>
           </button>
         </div>
       </div>
 
-      {/* 6 Core KPI Cards: 3 columns x 2 rows for spacious non-overflowing numbers */}
+      {/* 6 Core KPI Cards: 3 columns x 2 rows with vibrant pastel icon containers */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
         <StatCard
           title="Total Gross Revenue"
           value={formatCurrency(metrics?.totalSales)}
           subtitle={`${metrics?.salesCount || 0} completed invoices`}
           icon={TrendingUp}
-          badge="Commercial Sales"
+          badge="Sales"
+          colorScheme="emerald"
           onClick={() => onNavigate('sales')}
         />
 
@@ -129,7 +130,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           value={formatCurrency(metrics?.totalPurchases)}
           subtitle={`${metrics?.purchasesCount || 0} purchase orders placed`}
           icon={TrendingDown}
-          badge="Inventory Supply"
+          badge="Procurement"
+          colorScheme="purple"
           onClick={() => onNavigate('purchases')}
         />
 
@@ -139,6 +141,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           subtitle={`${products?.length || 0} registered active SKUs`}
           icon={Package}
           badge="Warehouse"
+          colorScheme="blue"
           onClick={() => onNavigate('inventory')}
         />
 
@@ -147,7 +150,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           value={formatCurrency(metrics?.cashBankBalance)}
           subtitle="Combined register, DBBL & bKash"
           icon={Landmark}
-          badge="Available Funds"
+          badge="Liquidity"
+          colorScheme="emerald"
           onClick={() => onNavigate('accounts')}
         />
 
@@ -156,7 +160,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           value={formatCurrency(metrics?.totalReceivables)}
           subtitle="Pending customer collections"
           icon={ArrowDownLeft}
-          badge="Credit Balance"
+          badge="Receivables"
+          colorScheme="amber"
           onClick={() => onNavigate('accounts')}
         />
 
@@ -165,7 +170,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           value={formatCurrency(metrics?.totalPayables)}
           subtitle="Pending supplier disbursements"
           icon={ArrowUpRight}
-          badge="Accounts Payable"
+          badge="Payables"
+          colorScheme="rose"
           onClick={() => onNavigate('accounts')}
         />
       </div>
@@ -173,7 +179,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* Main Charts & Low Stock Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Monthly Comparison Chart */}
-        <div className="lg:col-span-2 bg-white border border-slate-200/90 rounded-xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+        <div className="lg:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
           <div className="flex items-center justify-between mb-5">
             <div>
               <h3 className="text-sm font-bold text-slate-900 tracking-tight">Sales vs. Purchases Trend</h3>
@@ -203,7 +209,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Low Stock Alerts */}
-        <div className="bg-white border border-slate-200/90 rounded-xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
               <div className="flex items-center gap-2">
@@ -252,7 +258,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* Feeds: Recent Sales & Recent Purchases & Transactions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Sales */}
-        <div className="bg-white border border-slate-200/90 rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Recent Sales Invoices</h3>
             <button
@@ -282,7 +288,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Recent Purchases */}
-        <div className="bg-white border border-slate-200/90 rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Recent Purchase Orders</h3>
             <button
@@ -312,7 +318,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Recent Financial Transactions */}
-        <div className="bg-white border border-slate-200/90 rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Recent Cashflow & Ledger</h3>
             <button

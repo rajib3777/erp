@@ -14,6 +14,7 @@ import { AccountsView } from '@/features/accounts/AccountsView';
 import { CustomersView } from '@/features/customers/CustomersView';
 import { SuppliersView } from '@/features/suppliers/SuppliersView';
 import { SettingsView } from '@/features/settings/SettingsView';
+import { TotallyCopilot } from '@/components/common/TotallyCopilot';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -46,7 +47,7 @@ const AppContent: React.FC = () => {
       case 'settings':
         return 'Database Migrations & Verification';
       default:
-        return 'Nexus ERP';
+        return 'Totally';
     }
   };
 
@@ -71,6 +72,9 @@ const AppContent: React.FC = () => {
       {currentTab === 'customers' && <CustomersView />}
       {currentTab === 'suppliers' && <SuppliersView />}
       {currentTab === 'settings' && <SettingsView />}
+
+      {/* Floating Copilot Assistant from Screenshot 1 */}
+      <TotallyCopilot onNavigate={setCurrentTab} />
 
       {/* Cross-workspace Quick Action Modals */}
       <CreateSaleModal

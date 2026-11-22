@@ -1,4 +1,4 @@
-# Nexus ERP — Professional Integrated Mini ERP System
+# Totally — Professional Integrated Mini ERP System
 
 > **Technical Recruitment Assessment — Code Bondhu IT**  
 > Role: Senior Full-Stack Software Engineer / ERP Solution Architect  
@@ -8,9 +8,9 @@
 
 ## 1. Project Overview
 
-**Nexus ERP** is a fully functional, integrated enterprise resource planning system engineered for small-to-medium-sized trading and wholesale businesses.
+**Totally** is a fully functional, integrated enterprise resource planning system engineered for small-to-medium-sized trading and wholesale businesses.
 
-Unlike disjointed CRUD applications, Nexus ERP unifies **Sales, Procurement, Inventory, and Financial Accounting** on top of a shared relational schema and transactional ledger. Every sale, purchase order, customer receivable collection, and supplier payment executes with atomic consistency, preventing negative stock, duplicate submissions, and unbalanced ledger postings.
+Unlike disjointed CRUD applications, Totally unifies **Sales, Procurement, Inventory, and Financial Accounting** on top of a shared relational schema and transactional ledger. Every sale, purchase order, customer receivable collection, and supplier payment executes with atomic consistency, preventing negative stock, duplicate submissions, and unbalanced ledger postings.
 
 ### Key Engineering Principles
 - **True Cross-Module Integration**: Purchases directly update product stock, cost averages, and supplier payables. Sales directly validate and deduct inventory, increase customer receivables, and log financial transactions.

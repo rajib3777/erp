@@ -14,7 +14,7 @@ interface AuthContextType {
 const DEMO_USERS: Record<UserRole, UserProfile> = {
   admin: {
     id: 'u-admin-01',
-    email: 'admin@nexuserp.bd',
+    email: 'admin@totally.bd',
     full_name: 'Mahmudur Rahman (System Admin)',
     role: 'admin',
     phone: '+880 1711-001122',
@@ -24,7 +24,7 @@ const DEMO_USERS: Record<UserRole, UserProfile> = {
   },
   manager: {
     id: 'u-mgr-02',
-    email: 'manager@nexuserp.bd',
+    email: 'manager@totally.bd',
     full_name: 'Tanvir Hossain (Operations Manager)',
     role: 'manager',
     phone: '+880 1711-223344',
@@ -34,7 +34,7 @@ const DEMO_USERS: Record<UserRole, UserProfile> = {
   },
   accountant: {
     id: 'u-acc-03',
-    email: 'accountant@nexuserp.bd',
+    email: 'accountant@totally.bd',
     full_name: 'Shakil Ahmed (Head Accountant)',
     role: 'accountant',
     phone: '+880 1819-334455',
@@ -44,7 +44,7 @@ const DEMO_USERS: Record<UserRole, UserProfile> = {
   },
   sales_staff: {
     id: 'u-sales-04',
-    email: 'sales@nexuserp.bd',
+    email: 'sales@totally.bd',
     full_name: 'Farhana Yasmin (Sales Officer)',
     role: 'sales_staff',
     phone: '+880 1914-445566',
@@ -54,7 +54,7 @@ const DEMO_USERS: Record<UserRole, UserProfile> = {
   },
   purchase_staff: {
     id: 'u-proc-05',
-    email: 'purchase@nexuserp.bd',
+    email: 'purchase@totally.bd',
     full_name: 'Kamrul Hasan (Procurement Officer)',
     role: 'purchase_staff',
     phone: '+880 1618-556677',
