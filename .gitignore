@@ -34,3 +34,4 @@ dist-ssr
 /*.jpg
 /*.jpeg
 !src/assets/*.png
+supabase/.temp/
