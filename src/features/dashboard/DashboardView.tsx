@@ -152,137 +152,153 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* 2. Top 5 KPI Cards Row — Big, Bold, High-Contrast Typography */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5">
-        {/* Card 1: Total Sales */}
-        <div
-          onClick={() => onNavigate('sales')}
-          className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-purple-300 transition-all cursor-pointer min-w-0 overflow-hidden flex flex-col justify-between group"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 border border-purple-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
-              <BarChart2 className="w-6 h-6 stroke-[2.2]" />
+      {/* 2. Executive KPI Cards — 3 Top + 2 Bottom Spacious Grid (Zero Truncation) */}
+      <div className="space-y-4 sm:space-y-5">
+        {/* Top Row: 3 Wide Cards (Sales, Procurement, Inventory Valuation) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+          {/* Card 1: Total Sales */}
+          <div
+            onClick={() => onNavigate('sales')}
+            className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-purple-300 transition-all cursor-pointer min-w-0 flex flex-col justify-between group"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 border border-purple-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                <BarChart2 className="w-6 h-6 stroke-[2.2]" />
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
+                ↑ 12.5%
+              </span>
             </div>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
-              ↑ 12.5%
-            </span>
+            <div className="mt-4">
+              <p className="text-xs sm:text-sm font-extrabold text-slate-700 uppercase tracking-wider">
+                Sales Revenue
+              </p>
+              <p
+                className="text-2xl sm:text-3xl xl:text-4xl font-black font-mono text-slate-950 mt-1.5 tracking-tight"
+                title={formatCurrency(metrics?.totalSales)}
+              >
+                {formatCurrency(metrics?.totalSales)}
+              </p>
+              <p className="text-xs sm:text-sm text-slate-600 font-semibold mt-1.5">
+                Total billed gross revenue
+              </p>
+            </div>
           </div>
-          <div className="mt-4 min-w-0">
-            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">
-              Sales Revenue
-            </p>
-            <p
-              className="text-2xl sm:text-3xl font-black font-mono text-slate-950 mt-1 truncate tracking-tight"
-              title={formatCurrency(metrics?.totalSales)}
-            >
-              {formatCurrency(metrics?.totalSales)}
-            </p>
-            <p className="text-xs text-slate-600 font-semibold mt-1.5 truncate">Total billed gross revenue</p>
+
+          {/* Card 2: Total Purchases */}
+          <div
+            onClick={() => onNavigate('purchases')}
+            className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer min-w-0 flex flex-col justify-between group"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                <ShoppingCart className="w-6 h-6 stroke-[2.2]" />
+              </div>
+              <span className="text-xs font-bold text-rose-800 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200 flex items-center gap-1 font-mono shrink-0">
+                ↓ 8.3%
+              </span>
+            </div>
+            <div className="mt-4">
+              <p className="text-xs sm:text-sm font-extrabold text-slate-700 uppercase tracking-wider">
+                Procurement Cost
+              </p>
+              <p
+                className="text-2xl sm:text-3xl xl:text-4xl font-black font-mono text-slate-950 mt-1.5 tracking-tight"
+                title={formatCurrency(metrics?.totalPurchases)}
+              >
+                {formatCurrency(metrics?.totalPurchases)}
+              </p>
+              <p className="text-xs sm:text-sm text-slate-600 font-semibold mt-1.5">
+                Total supplier PO volume
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3: Inventory Value */}
+          <div
+            onClick={() => onNavigate('inventory')}
+            className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-blue-300 transition-all cursor-pointer min-w-0 flex flex-col justify-between group"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 border border-blue-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                <Package className="w-6 h-6 stroke-[2.2]" />
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
+                ↑ 9.6%
+              </span>
+            </div>
+            <div className="mt-4">
+              <p className="text-xs sm:text-sm font-extrabold text-slate-700 uppercase tracking-wider">
+                Stock Valuation
+              </p>
+              <p
+                className="text-2xl sm:text-3xl xl:text-4xl font-black font-mono text-slate-950 mt-1.5 tracking-tight"
+                title={formatCurrency(metrics?.currentStockValue)}
+              >
+                {formatCurrency(metrics?.currentStockValue)}
+              </p>
+              <p className="text-xs sm:text-sm text-slate-600 font-semibold mt-1.5">
+                Warehouse valuation at cost
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Card 2: Total Purchases */}
-        <div
-          onClick={() => onNavigate('purchases')}
-          className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer min-w-0 overflow-hidden flex flex-col justify-between group"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
-              <ShoppingCart className="w-6 h-6 stroke-[2.2]" />
+        {/* Bottom Row: 2 Extra Spacious Cards (Stock Volume, Liquid Cash & Bank) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          {/* Card 4: Total Stock Volume */}
+          <div
+            onClick={() => onNavigate('inventory')}
+            className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-amber-300 transition-all cursor-pointer min-w-0 flex flex-col justify-between group"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                <Layers className="w-6 h-6 stroke-[2.2]" />
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
+                ↑ 15.4%
+              </span>
             </div>
-            <span className="text-xs font-bold text-rose-800 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200 flex items-center gap-1 font-mono shrink-0">
-              ↓ 8.3%
-            </span>
+            <div className="mt-4">
+              <p className="text-xs sm:text-sm font-extrabold text-slate-700 uppercase tracking-wider">
+                Stock Volume
+              </p>
+              <p className="text-2xl sm:text-3xl xl:text-4xl font-black font-mono text-slate-950 mt-1.5 tracking-tight">
+                {totalStockUnits.toLocaleString()} Units
+              </p>
+              <p className="text-xs sm:text-sm text-slate-600 font-semibold mt-1.5">
+                Total physical stock on-hand across {products.length} active SKUs
+              </p>
+            </div>
           </div>
-          <div className="mt-4 min-w-0">
-            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">
-              Procurement Cost
-            </p>
-            <p
-              className="text-2xl sm:text-3xl font-black font-mono text-slate-950 mt-1 truncate tracking-tight"
-              title={formatCurrency(metrics?.totalPurchases)}
-            >
-              {formatCurrency(metrics?.totalPurchases)}
-            </p>
-            <p className="text-xs text-slate-600 font-semibold mt-1.5 truncate">Total supplier PO volume</p>
-          </div>
-        </div>
 
-        {/* Card 3: Inventory Value */}
-        <div
-          onClick={() => onNavigate('inventory')}
-          className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-blue-300 transition-all cursor-pointer min-w-0 overflow-hidden flex flex-col justify-between group"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 border border-blue-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
-              <Package className="w-6 h-6 stroke-[2.2]" />
+          {/* Card 5: Net Liquidity Cash Balance */}
+          <div
+            onClick={() => onNavigate('accounts')}
+            className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-rose-300 transition-all cursor-pointer min-w-0 flex flex-col justify-between group"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 border border-rose-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                <CreditCard className="w-6 h-6 stroke-[2.2]" />
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
+                ↑ 18.7%
+              </span>
             </div>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
-              ↑ 9.6%
-            </span>
-          </div>
-          <div className="mt-4 min-w-0">
-            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">
-              Stock Valuation
-            </p>
-            <p
-              className="text-2xl sm:text-3xl font-black font-mono text-slate-950 mt-1 truncate tracking-tight"
-              title={formatCurrency(metrics?.currentStockValue)}
-            >
-              {formatCurrency(metrics?.currentStockValue)}
-            </p>
-            <p className="text-xs text-slate-600 font-semibold mt-1.5 truncate">Warehouse valuation at cost</p>
-          </div>
-        </div>
-
-        {/* Card 4: Total Stock Volume */}
-        <div
-          onClick={() => onNavigate('inventory')}
-          className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-amber-300 transition-all cursor-pointer min-w-0 overflow-hidden flex flex-col justify-between group"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
-              <Layers className="w-6 h-6 stroke-[2.2]" />
+            <div className="mt-4">
+              <p className="text-xs sm:text-sm font-extrabold text-slate-700 uppercase tracking-wider">
+                Liquid Cash & Bank
+              </p>
+              <p
+                className="text-2xl sm:text-3xl xl:text-4xl font-black font-mono text-slate-950 mt-1.5 tracking-tight"
+                title={formatCurrency(metrics?.cashBankBalance)}
+              >
+                {formatCurrency(metrics?.cashBankBalance)}
+              </p>
+              <p className="text-xs sm:text-sm text-slate-600 font-semibold mt-1.5">
+                Reconciled liquidity available across financial accounts
+              </p>
             </div>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
-              ↑ 15.4%
-            </span>
-          </div>
-          <div className="mt-4 min-w-0">
-            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">
-              Stock Volume
-            </p>
-            <p className="text-2xl sm:text-3xl font-black font-mono text-slate-950 mt-1 truncate tracking-tight">
-              {totalStockUnits.toLocaleString()} Units
-            </p>
-            <p className="text-xs text-slate-600 font-semibold mt-1.5 truncate">Across {products.length} active SKUs</p>
-          </div>
-        </div>
-
-        {/* Card 5: Net Liquidity Cash Balance */}
-        <div
-          onClick={() => onNavigate('accounts')}
-          className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-rose-300 transition-all cursor-pointer min-w-0 overflow-hidden flex flex-col justify-between group col-span-1 sm:col-span-2 md:col-span-1"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 border border-rose-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
-              <CreditCard className="w-6 h-6 stroke-[2.2]" />
-            </div>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1 font-mono shrink-0">
-              ↑ 18.7%
-            </span>
-          </div>
-          <div className="mt-4 min-w-0">
-            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">
-              Liquid Cash & Bank
-            </p>
-            <p
-              className="text-2xl sm:text-3xl font-black font-mono text-slate-950 mt-1 truncate tracking-tight"
-              title={formatCurrency(metrics?.cashBankBalance)}
-            >
-              {formatCurrency(metrics?.cashBankBalance)}
-            </p>
-            <p className="text-xs text-slate-600 font-semibold mt-1.5 truncate">Reconciled liquid balance</p>
           </div>
         </div>
       </div>
