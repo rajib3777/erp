@@ -118,10 +118,12 @@ export const SettingsView: React.FC = () => {
       // TEST 4: Create unpaid sale -> verify receivables increase without increasing cash
       const t4Start = performance.now();
       updateTest(4, 'running');
-      const customer = customers[0];
+      const freshCustomersT4 = await dataService.getCustomers();
+      const customer = freshCustomersT4[0];
       const custReceivableBefore = customer.total_receivable;
-      const account = accounts[0];
-      const cashBefore = account.balance;
+      const freshAccountsT4 = await dataService.getAccounts();
+      const account = freshAccountsT4[0];
+      const cashBeforeT4 = account.balance;
 
       const creditSale = await dataService.processSale({
         customer_id: customer.id,
@@ -138,16 +140,24 @@ export const SettingsView: React.FC = () => {
       const accAfter = accountsAfter.find((a) => a.id === account.id);
 
       const expectedDue = 2 * testProd.selling_price;
-      if (custAfter && custAfter.total_receivable === custReceivableBefore + expectedDue && accAfter && accAfter.balance === cashBefore) {
-        updateTest(4, 'passed', `Receivables rose by ৳${expectedDue}. Cash balance stayed unchanged at ৳${cashBefore}.`, Math.round(performance.now() - t4Start));
+      if (
+        custAfter &&
+        Math.abs(custAfter.total_receivable - (custReceivableBefore + expectedDue)) < 0.01 &&
+        accAfter &&
+        Math.abs(accAfter.balance - cashBeforeT4) < 0.01
+      ) {
+        updateTest(4, 'passed', `Receivables rose by ৳${expectedDue}. Cash balance stayed unchanged at ৳${cashBeforeT4}.`, Math.round(performance.now() - t4Start));
       } else {
-        updateTest(4, 'failed', 'Receivable or cash balance calculation mismatch.');
+        updateTest(4, 'failed', `Receivable or cash balance calculation mismatch. (Expected rec: ${custReceivableBefore + expectedDue}, got: ${custAfter?.total_receivable}; Expected cash: ${cashBeforeT4}, got: ${accAfter?.balance})`);
       }
 
       // TEST 5: Collect partial customer payment -> verify receivables decrease and cash increases
       const t5Start = performance.now();
       updateTest(5, 'running');
       const paymentAmount = 1000;
+      const custBeforeT5 = (await dataService.getCustomers()).find((c) => c.id === customer.id)!;
+      const accBeforeT5 = (await dataService.getAccounts()).find((a) => a.id === account.id)!;
+
       await dataService.processCustomerPayment({
         customer_id: customer.id,
         amount: paymentAmount,
@@ -159,17 +169,24 @@ export const SettingsView: React.FC = () => {
       const custAfterPay = (await dataService.getCustomers()).find((c) => c.id === customer.id);
       const accAfterPay = (await dataService.getAccounts()).find((a) => a.id === account.id);
 
-      if (custAfterPay && accAfterPay && custAfterPay.total_receivable === custAfter!.total_receivable - paymentAmount && accAfterPay.balance === cashBefore + paymentAmount) {
+      if (
+        custAfterPay &&
+        accAfterPay &&
+        Math.abs(custAfterPay.total_receivable - (custBeforeT5.total_receivable - paymentAmount)) < 0.01 &&
+        Math.abs(accAfterPay.balance - (accBeforeT5.balance + paymentAmount)) < 0.01
+      ) {
         updateTest(5, 'passed', `Receivables reduced by ৳${paymentAmount}. Account cash balance increased by exactly ৳${paymentAmount}.`, Math.round(performance.now() - t5Start));
       } else {
-        updateTest(5, 'failed', 'Payment collection failed to balance receivables and cash accounts.');
+        updateTest(5, 'failed', `Payment collection failed to balance receivables and cash accounts.`);
       }
 
       // TEST 6: Create unpaid purchase -> verify supplier payables increase
       const t6Start = performance.now();
       updateTest(6, 'running');
-      const supplier = suppliers[0];
+      const freshSuppliersT6 = await dataService.getSuppliers();
+      const supplier = freshSuppliersT6[0];
       const payableBefore = supplier.total_payable;
+
       const unpaidPO = await dataService.processPurchase({
         supplier_id: supplier.id,
         items: [{ product_id: testProd.id, quantity: 5, unit_cost: testProd.purchase_cost }],
@@ -181,16 +198,17 @@ export const SettingsView: React.FC = () => {
 
       const suppAfter = (await dataService.getSuppliers()).find((s) => s.id === supplier.id);
       const expectedPayable = 5 * testProd.purchase_cost;
-      if (suppAfter && suppAfter.total_payable === payableBefore + expectedPayable) {
+      if (suppAfter && Math.abs(suppAfter.total_payable - (payableBefore + expectedPayable)) < 0.01) {
         updateTest(6, 'passed', `Supplier payables increased by ৳${expectedPayable} without cash outflow.`, Math.round(performance.now() - t6Start));
       } else {
-        updateTest(6, 'failed', 'Supplier payable calculation error.');
+        updateTest(6, 'failed', `Supplier payable calculation error. (Expected: ${payableBefore + expectedPayable}, got: ${suppAfter?.total_payable})`);
       }
 
       // TEST 7: Make partial supplier payment -> verify payables decrease and cash decreases
       const t7Start = performance.now();
       updateTest(7, 'running');
       const suppPaymentAmt = 1500;
+      const suppBeforeT7 = (await dataService.getSuppliers()).find((s) => s.id === supplier.id)!;
       const accBeforeSuppPay = (await dataService.getAccounts()).find((a) => a.id === account.id)!.balance;
 
       await dataService.processSupplierPayment({
@@ -204,7 +222,12 @@ export const SettingsView: React.FC = () => {
       const suppAfterPay = (await dataService.getSuppliers()).find((s) => s.id === supplier.id);
       const accAfterSuppPay = (await dataService.getAccounts()).find((a) => a.id === account.id);
 
-      if (suppAfterPay && accAfterSuppPay && suppAfterPay.total_payable === suppAfter!.total_payable - suppPaymentAmt && accAfterSuppPay.balance === accBeforeSuppPay - suppPaymentAmt) {
+      if (
+        suppAfterPay &&
+        accAfterSuppPay &&
+        Math.abs(suppAfterPay.total_payable - (suppBeforeT7.total_payable - suppPaymentAmt)) < 0.01 &&
+        Math.abs(accAfterSuppPay.balance - (accBeforeSuppPay - suppPaymentAmt)) < 0.01
+      ) {
         updateTest(7, 'passed', `Payables reduced by ৳${suppPaymentAmt}. Cash balance decreased by ৳${suppPaymentAmt}.`, Math.round(performance.now() - t7Start));
       } else {
         updateTest(7, 'failed', 'Supplier payout failed to decrease payables and cash balances.');
