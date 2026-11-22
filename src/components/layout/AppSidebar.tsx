@@ -90,14 +90,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   onSelectTab(item.id);
                   onClose();
                 }}
-                className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-md transition-colors ${
+                className={`w-full flex items-center gap-3 px-3 py-2.5 text-xs font-medium rounded-lg transition-all ${
                   isActive
-                    ? 'bg-slate-900 text-white font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                    ? 'bg-slate-900 text-white font-semibold border border-slate-800/80 shadow-xs'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/50'
                 }`}
               >
                 <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-slate-500'}`} />
-                <span>{item.name}</span>
+                <span className="tracking-tight">{item.name}</span>
               </button>
             );
           })}

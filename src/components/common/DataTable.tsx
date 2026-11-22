@@ -95,10 +95,10 @@ export function DataTable<T extends Record<string, any>>({
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-2xs">
+    <div className="bg-white border border-slate-200/90 rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm text-slate-600">
-          <thead className="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-semibold select-none">
+          <thead className="bg-slate-50/75 border-b border-slate-200/90 text-[11px] uppercase tracking-wider text-slate-500 font-semibold select-none">
             <tr>
               {columns.map((col, idx) => {
                 const alignClass =
@@ -111,8 +111,8 @@ export function DataTable<T extends Record<string, any>>({
                 return (
                   <th
                     key={idx}
-                    className={`py-3 px-4 ${alignClass} ${col.className || ''} ${
-                      col.sortable ? 'cursor-pointer hover:bg-slate-100 transition-colors' : ''
+                    className={`py-3.5 px-4 ${alignClass} ${col.className || ''} ${
+                      col.sortable ? 'cursor-pointer hover:bg-slate-100/70 transition-colors' : ''
                     }`}
                     onClick={() => col.sortable && handleSort(col.accessorKey)}
                   >
@@ -131,7 +131,7 @@ export function DataTable<T extends Record<string, any>>({
                               <ArrowDown className="w-3.5 h-3.5 text-slate-900" />
                             )
                           ) : (
-                            <ArrowUpDown className="w-3.5 h-3.5 opacity-50" />
+                            <ArrowUpDown className="w-3.5 h-3.5 opacity-40" />
                           )}
                         </span>
                       )}
@@ -146,7 +146,7 @@ export function DataTable<T extends Record<string, any>>({
               <tr
                 key={rowIdx}
                 onClick={() => onRowClick && onRowClick(row)}
-                className={`hover:bg-slate-50/80 transition-colors ${
+                className={`hover:bg-slate-50/60 transition-colors ${
                   onRowClick ? 'cursor-pointer' : ''
                 }`}
               >

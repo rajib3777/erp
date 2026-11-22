@@ -281,28 +281,28 @@ export const AccountsView: React.FC = () => {
 
       {/* 4 Core Financial KPI Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Cash & Bank Liquidity</p>
-          <p className="text-xl font-bold font-mono text-slate-900 mt-1">{formatCurrency(totalLiquidity)}</p>
-          <p className="text-[10px] text-slate-400 mt-0.5">{accounts.length} active financial accounts</p>
+        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Cash & Bank Liquidity</p>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-slate-900 mt-1 truncate" title={formatCurrency(totalLiquidity)}>{formatCurrency(totalLiquidity)}</p>
+          <p className="text-[10px] text-slate-400 mt-1 truncate">{accounts.length} active financial accounts</p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Customer Receivables</p>
-          <p className="text-xl font-bold font-mono text-emerald-700 mt-1">{formatCurrency(totalReceivables)}</p>
-          <p className="text-[10px] text-slate-400 mt-0.5">Owed to company by customers</p>
+        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Customer Receivables</p>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-emerald-700 mt-1 truncate" title={formatCurrency(totalReceivables)}>{formatCurrency(totalReceivables)}</p>
+          <p className="text-[10px] text-slate-400 mt-1 truncate">Owed to company by customers</p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Supplier Payables</p>
-          <p className="text-xl font-bold font-mono text-rose-600 mt-1">{formatCurrency(totalPayables)}</p>
-          <p className="text-[10px] text-slate-400 mt-0.5">Owed by company to vendors</p>
+        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Supplier Payables</p>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-rose-600 mt-1 truncate" title={formatCurrency(totalPayables)}>{formatCurrency(totalPayables)}</p>
+          <p className="text-[10px] text-slate-400 mt-1 truncate">Owed by company to vendors</p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Net Working Capital</p>
-          <p className="text-xl font-bold font-mono text-indigo-700 mt-1">{formatCurrency(netWorkingCapital)}</p>
-          <p className="text-[10px] text-slate-400 mt-0.5">(Liquidity + Receivables - Payables)</p>
+        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Net Working Capital</p>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-indigo-700 mt-1 truncate" title={formatCurrency(netWorkingCapital)}>{formatCurrency(netWorkingCapital)}</p>
+          <p className="text-[10px] text-slate-400 mt-1 truncate">(Liquidity + Receivables - Payables)</p>
         </div>
       </div>
 
@@ -363,34 +363,34 @@ export const AccountsView: React.FC = () => {
             return (
               <div
                 key={acc.id}
-                className="bg-white border border-slate-200 rounded-lg p-5 shadow-2xs flex flex-col justify-between"
+                className="bg-white border border-slate-200/90 rounded-xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)] flex flex-col justify-between min-w-0"
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <div className="p-2.5 rounded-md bg-slate-100 text-slate-700">
+                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-700">
                       <Icon className="w-5 h-5" />
                     </div>
                     {acc.is_default && (
-                      <span className="text-[10px] uppercase font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
-                        Default
+                      <span className="text-[10px] uppercase font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md">
+                        Primary Default
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-base font-semibold text-slate-900 mt-4">{acc.name}</h3>
-                  <p className="text-xs text-slate-400 capitalize font-mono mt-0.5">
+                  <h3 className="text-base font-bold text-slate-900 tracking-tight mt-4 truncate">{acc.name}</h3>
+                  <p className="text-xs text-slate-500 capitalize font-mono mt-0.5 truncate">
                     {acc.bank_name || acc.type} {acc.account_number ? `• ${acc.account_number}` : ''}
                   </p>
                   {acc.branch && (
-                    <p className="text-[11px] text-slate-400 mt-1">{acc.branch}</p>
+                    <p className="text-[11px] text-slate-400 mt-1 truncate">{acc.branch}</p>
                   )}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-baseline justify-between">
-                  <span className="text-xs text-slate-500 uppercase tracking-wider font-medium">
+                <div className="mt-6 pt-4 border-t border-slate-100 flex flex-col gap-1 min-w-0">
+                  <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
                     Available Balance
                   </span>
-                  <span className="text-xl font-bold font-mono text-slate-900">
+                  <span className="text-xl sm:text-2xl font-bold font-mono text-slate-900 tracking-tight truncate" title={formatCurrency(acc.balance)}>
                     {formatCurrency(acc.balance)}
                   </span>
                 </div>

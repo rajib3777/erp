@@ -152,17 +152,17 @@ export const PurchasesView: React.FC = () => {
 
       {/* Mini KPI Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Procurement</p>
-          <p className="text-xl font-bold font-mono text-slate-900 mt-1">{formatCurrency(totalProcurement)}</p>
+        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Total Procurement</p>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-slate-900 mt-1 truncate" title={formatCurrency(totalProcurement)}>{formatCurrency(totalProcurement)}</p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Settled Payouts</p>
-          <p className="text-xl font-bold font-mono text-slate-800 mt-1">{formatCurrency(totalPaid)}</p>
+        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Settled Payouts</p>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-slate-800 mt-1 truncate" title={formatCurrency(totalPaid)}>{formatCurrency(totalPaid)}</p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-2xs">
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Pending Payables</p>
-          <p className="text-xl font-bold font-mono text-amber-600 mt-1">{formatCurrency(totalDue)}</p>
+        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Pending Payables (Due)</p>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-amber-600 mt-1 truncate" title={formatCurrency(totalDue)}>{formatCurrency(totalDue)}</p>
         </div>
       </div>
 
