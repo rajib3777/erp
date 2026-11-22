@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Plus, Eye, ShoppingCart, Filter } from 'lucide-react';
+import { Plus, Eye, ShoppingCart, Filter, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { dataService } from '@/lib/data-service';
 import { Sale } from '@/types';
 import { formatCurrency } from '@/utils/currency';
@@ -61,8 +61,8 @@ export const SalesView: React.FC = () => {
       sortable: true,
       cell: (row) => (
         <div>
-          <p className="font-medium text-slate-900">{row.customer_name}</p>
-          <p className="text-[10px] text-slate-400">{row.customer_phone}</p>
+          <p className="font-bold text-slate-950">{row.customer_name}</p>
+          <p className="text-xs font-medium text-slate-700">{row.customer_phone}</p>
         </div>
       ),
     },
@@ -70,7 +70,7 @@ export const SalesView: React.FC = () => {
       header: 'Date',
       accessorKey: 'sale_date',
       sortable: true,
-      cell: (row) => <span className="text-xs text-slate-600">{formatDate(row.sale_date)}</span>,
+      cell: (row) => <span className="text-xs font-medium text-slate-800">{formatDate(row.sale_date)}</span>,
     },
     {
       header: 'Total Amount',
@@ -78,7 +78,7 @@ export const SalesView: React.FC = () => {
       sortable: true,
       align: 'right',
       cell: (row) => (
-        <span className="font-mono font-semibold text-slate-900">
+        <span className="font-mono font-bold text-slate-950">
           {formatCurrency(row.grand_total)}
         </span>
       ),
@@ -89,7 +89,7 @@ export const SalesView: React.FC = () => {
       sortable: true,
       align: 'right',
       cell: (row) => (
-        <span className="font-mono text-emerald-700">{formatCurrency(row.paid_amount)}</span>
+        <span className="font-mono font-bold text-emerald-800">{formatCurrency(row.paid_amount)}</span>
       ),
     },
     {
@@ -98,7 +98,7 @@ export const SalesView: React.FC = () => {
       sortable: true,
       align: 'right',
       cell: (row) => (
-        <span className={`font-mono ${row.due_amount > 0 ? 'text-rose-600 font-medium' : 'text-slate-400'}`}>
+        <span className={`font-mono font-bold ${row.due_amount > 0 ? 'text-rose-700 font-black' : 'text-slate-700'}`}>
           {formatCurrency(row.due_amount)}
         </span>
       ),
@@ -124,9 +124,9 @@ export const SalesView: React.FC = () => {
             e.stopPropagation();
             setSelectedSale(row);
           }}
-          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded transition-colors shadow-2xs"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors shadow-2xs cursor-pointer"
         >
-          <Eye className="w-3.5 h-3.5" />
+          <Eye className="w-3.5 h-3.5 text-slate-700" />
           <span>Invoice</span>
         </button>
       ),
@@ -134,35 +134,53 @@ export const SalesView: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       {/* Page Header */}
       <PageHeader
-        title="Sales & Invoices"
+        title="Sales Invoices & Commercial Orders"
         description="Process orders, generate tax invoices, track receivables, and enforce stock availability."
         breadcrumb="Commercial Operations"
       >
         <button
           onClick={() => setIsCreateOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-xs font-medium shadow-xs transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-emerald-600/30 transition-all hover:-translate-y-0.5 cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
-          <span>New Sales Invoice</span>
+          <Plus className="w-4 h-4 stroke-[2.5]" />
+          <span>+ New Sales Invoice</span>
         </button>
       </PageHeader>
 
-      {/* Mini KPI Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Total Invoiced</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-slate-900 mt-1 truncate" title={formatCurrency(totalRevenue)}>{formatCurrency(totalRevenue)}</p>
+      {/* Large High-Contrast KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-purple-300 transition-all min-w-0 flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">Total Invoiced Gross</p>
+            <p className="text-2xl sm:text-3xl font-black font-mono text-slate-950 mt-1 truncate" title={formatCurrency(totalRevenue)}>{formatCurrency(totalRevenue)}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">All customer billing volume</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 border border-purple-200 shadow-2xs">
+            <ShoppingCart className="w-6 h-6 stroke-[2]" />
+          </div>
         </div>
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Settled Collections</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-emerald-700 mt-1 truncate" title={formatCurrency(totalPaid)}>{formatCurrency(totalPaid)}</p>
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all min-w-0 flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">Settled Collections</p>
+            <p className="text-2xl sm:text-3xl font-black font-mono text-emerald-800 mt-1 truncate" title={formatCurrency(totalPaid)}>{formatCurrency(totalPaid)}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">Realized cash receipts</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200 shadow-2xs">
+            <CheckCircle2 className="w-6 h-6 stroke-[2]" />
+          </div>
         </div>
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Outstanding Due (Receivables)</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-rose-600 mt-1 truncate" title={formatCurrency(totalDue)}>{formatCurrency(totalDue)}</p>
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-rose-300 transition-all min-w-0 flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">Outstanding Due (Receivables)</p>
+            <p className="text-2xl sm:text-3xl font-black font-mono text-rose-700 mt-1 truncate" title={formatCurrency(totalDue)}>{formatCurrency(totalDue)}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">Pending customer balances</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200 shadow-2xs">
+            <AlertTriangle className="w-6 h-6 stroke-[2]" />
+          </div>
         </div>
       </div>
 

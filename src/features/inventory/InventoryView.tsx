@@ -132,25 +132,25 @@ export const InventoryView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       {/* Top Header matching Screenshot 2 */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Inventory & Catalog</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Real-time stock valuation, minimum safety thresholds, and audited movement trail.
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">Inventory & Stock Valuation</h1>
+          <p className="text-xs sm:text-sm text-slate-700 mt-1.5 font-medium">
+            Real-time warehouse valuation, safety threshold alerts, and audited stock movement trail.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => {
               setAdjustProductId(undefined);
               setIsAdjustOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-900 rounded-xl text-xs sm:text-sm font-bold shadow-2xs transition-colors cursor-pointer"
           >
-            <Sliders className="w-3.5 h-3.5 text-slate-500" />
+            <Sliders className="w-4 h-4 text-slate-700" />
             <span>Stock Adjustment</span>
           </button>
           <button
@@ -158,7 +158,7 @@ export const InventoryView: React.FC = () => {
               setProductToEdit(null);
               setIsCreateOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm shadow-blue-600/25 transition-all hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-blue-600/30 transition-all hover:-translate-y-0.5 cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>+ Add New Product</span>
@@ -166,61 +166,61 @@ export const InventoryView: React.FC = () => {
         </div>
       </div>
 
-      {/* 3 KPI Cards matching Screenshot 2 */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* 3 Large KPI Cards — High-Contrast Typography */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         {/* Card 1: Products */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between min-w-0 group hover:shadow-md transition-all">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-13 h-13 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shrink-0 shadow-2xs">
-              <Box className="w-7 h-7 stroke-[1.8]" />
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex items-center justify-between min-w-0 group hover:shadow-md hover:border-blue-300 transition-all">
+          <div className="flex items-center gap-4.5 min-w-0">
+            <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 border border-blue-200 flex items-center justify-center shrink-0 shadow-2xs">
+              <Box className="w-7 h-7 stroke-[2]" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Products</p>
-              <p className="text-2xl sm:text-3xl font-bold text-blue-600 font-mono mt-0.5 truncate">
-                {products.length}
+              <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">Catalog SKUs</p>
+              <p className="text-2xl sm:text-3xl font-black text-slate-950 font-mono mt-1 truncate">
+                {products.length} Products
               </p>
-              <p className="text-[11px] text-slate-400 mt-0.5">Total in catalog</p>
+              <p className="text-xs text-slate-600 font-semibold mt-1">Total active product items</p>
             </div>
           </div>
-          <div className="p-2 rounded-xl text-blue-500 bg-blue-50/60 shrink-0">
+          <div className="p-2.5 rounded-xl text-blue-700 bg-blue-100 border border-blue-200 shrink-0">
             <TrendingUp className="w-4 h-4" />
           </div>
         </div>
 
         {/* Card 2: Low Stock */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between min-w-0 group hover:shadow-md transition-all">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-13 h-13 rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center shrink-0 shadow-2xs">
-              <AlertTriangle className="w-7 h-7 stroke-[1.8]" />
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex items-center justify-between min-w-0 group hover:shadow-md hover:border-rose-300 transition-all">
+          <div className="flex items-center gap-4.5 min-w-0">
+            <div className="w-14 h-14 rounded-2xl bg-rose-100 text-rose-700 border border-rose-200 flex items-center justify-center shrink-0 shadow-2xs">
+              <AlertTriangle className="w-7 h-7 stroke-[2]" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Low Stock Alert</p>
-              <p className="text-2xl sm:text-3xl font-bold text-rose-600 font-mono mt-0.5 truncate">
-                {lowStockCount}
+              <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">Low Stock Alert</p>
+              <p className="text-2xl sm:text-3xl font-black text-rose-700 font-mono mt-1 truncate">
+                {lowStockCount} Items
               </p>
-              <p className="text-[11px] text-slate-400 mt-0.5">Below threshold</p>
+              <p className="text-xs text-slate-600 font-semibold mt-1">Below safety replenishment level</p>
             </div>
           </div>
-          <div className="p-2 rounded-xl text-rose-500 bg-rose-50/60 shrink-0">
+          <div className="p-2.5 rounded-xl text-rose-700 bg-rose-100 border border-rose-200 shrink-0">
             <TrendingDown className="w-4 h-4" />
           </div>
         </div>
 
         {/* Card 3: Total Value */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between min-w-0 group hover:shadow-md transition-all">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-13 h-13 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 shadow-2xs">
-              <Wallet className="w-7 h-7 stroke-[1.8]" />
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex items-center justify-between min-w-0 group hover:shadow-md hover:border-emerald-300 transition-all">
+          <div className="flex items-center gap-4.5 min-w-0">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0 shadow-2xs">
+              <Wallet className="w-7 h-7 stroke-[2]" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Stock Asset Value</p>
-              <p className="text-xl sm:text-2xl font-bold text-emerald-600 font-mono mt-0.5 truncate" title={formatCurrency(totalStockValue)}>
+              <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">Stock Asset Valuation</p>
+              <p className="text-2xl sm:text-3xl font-black text-slate-950 font-mono mt-1 truncate" title={formatCurrency(totalStockValue)}>
                 {formatCurrency(totalStockValue)}
               </p>
-              <p className="text-[11px] text-slate-400 mt-0.5">Valuation ledger</p>
+              <p className="text-xs text-slate-600 font-semibold mt-1">Valuation at purchase cost</p>
             </div>
           </div>
-          <div className="p-2 rounded-xl text-emerald-600 bg-emerald-50/60 shrink-0">
+          <div className="p-2.5 rounded-xl text-emerald-700 bg-emerald-100 border border-emerald-200 shrink-0">
             <Package className="w-4 h-4" />
           </div>
         </div>

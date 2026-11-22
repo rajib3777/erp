@@ -157,64 +157,68 @@ export const PurchasesView: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       {/* Page Header matching Screenshot 1 */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Purchase Orders</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">Purchase Orders & Procurement</h1>
+          <p className="text-xs sm:text-sm text-slate-700 mt-1.5 font-medium">
             Manage, verify, and track all inbound supplier purchase orders and stock receipts.
           </p>
         </div>
 
         <button
           onClick={() => setIsCreateOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm shadow-emerald-600/25 transition-all self-start sm:self-auto hover:-translate-y-0.5"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-emerald-600/30 transition-all self-start sm:self-auto hover:-translate-y-0.5 cursor-pointer"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>+ New PO</span>
         </button>
       </div>
 
-      {/* 4 KPI Cards Row matching Screenshot 1 */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+      {/* 4 Large KPI Cards Row — High Contrast */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-center justify-between shadow-sm hover:shadow-md hover:border-blue-300 transition-all min-w-0">
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-400">Total POs</p>
-            <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 font-mono">{totalPOs}</p>
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">Total POs</p>
+            <p className="text-2xl sm:text-3xl font-black text-slate-950 mt-1 font-mono">{totalPOs}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">All purchase vouchers</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
-            <FileText className="w-5 h-5 stroke-[2]" />
+          <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200 shadow-2xs">
+            <FileText className="w-6 h-6 stroke-[2]" />
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-center justify-between shadow-sm hover:shadow-md hover:border-amber-300 transition-all min-w-0">
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-400">Pending Due</p>
-            <p className="text-2xl sm:text-3xl font-bold text-amber-600 mt-1 font-mono">{pendingCount}</p>
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">Pending Due</p>
+            <p className="text-2xl sm:text-3xl font-black text-amber-800 mt-1 font-mono">{pendingCount}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">Unpaid supplier dues</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
-            <Clock className="w-5 h-5 stroke-[2]" />
+          <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 border border-amber-200 shadow-2xs">
+            <Clock className="w-6 h-6 stroke-[2]" />
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-center justify-between shadow-sm hover:shadow-md hover:border-purple-300 transition-all min-w-0">
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-400">Partially Paid</p>
-            <p className="text-2xl sm:text-3xl font-bold text-purple-600 mt-1 font-mono">{partialCount}</p>
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">Partially Paid</p>
+            <p className="text-2xl sm:text-3xl font-black text-purple-800 mt-1 font-mono">{partialCount}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">Split disbursements</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 border border-purple-100">
-            <Truck className="w-5 h-5 stroke-[2]" />
+          <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 border border-purple-200 shadow-2xs">
+            <Truck className="w-6 h-6 stroke-[2]" />
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)] min-w-0">
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-center justify-between shadow-sm hover:shadow-md hover:border-emerald-300 transition-all min-w-0">
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-400">Completed</p>
-            <p className="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1 font-mono">{completedCount}</p>
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">Completed</p>
+            <p className="text-2xl sm:text-3xl font-black text-emerald-800 mt-1 font-mono">{completedCount}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">Reconciled & in stock</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
-            <CheckCircle2 className="w-5 h-5 stroke-[2]" />
+          <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200 shadow-2xs">
+            <CheckCircle2 className="w-6 h-6 stroke-[2]" />
           </div>
         </div>
       </div>

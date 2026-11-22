@@ -8,7 +8,7 @@ import {
   Plus,
   Wallet,
   CreditCard,
-  Building,
+  Building2,
 } from 'lucide-react';
 import { dataService } from '@/lib/data-service';
 import { Account, Customer, Supplier, FinancialTransaction } from '@/types';
@@ -279,30 +279,50 @@ export const AccountsView: React.FC = () => {
         </button>
       </PageHeader>
 
-      {/* 4 Core Financial KPI Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Cash & Bank Liquidity</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-slate-900 mt-1 truncate" title={formatCurrency(totalLiquidity)}>{formatCurrency(totalLiquidity)}</p>
-          <p className="text-[10px] text-slate-400 mt-1 truncate">{accounts.length} active financial accounts</p>
+      {/* 4 Core Financial KPI Bar — Large & High Contrast */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-blue-300 transition-all min-w-0 flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">Cash & Bank Liquidity</p>
+            <p className="text-2xl sm:text-3xl font-black font-mono text-slate-950 mt-1 truncate" title={formatCurrency(totalLiquidity)}>{formatCurrency(totalLiquidity)}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">{accounts.length} active financial accounts</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200 shadow-2xs">
+            <CreditCard className="w-6 h-6 stroke-[2]" />
+          </div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Customer Receivables</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-emerald-700 mt-1 truncate" title={formatCurrency(totalReceivables)}>{formatCurrency(totalReceivables)}</p>
-          <p className="text-[10px] text-slate-400 mt-1 truncate">Owed to company by customers</p>
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all min-w-0 flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">Customer Receivables</p>
+            <p className="text-2xl sm:text-3xl font-black font-mono text-emerald-800 mt-1 truncate" title={formatCurrency(totalReceivables)}>{formatCurrency(totalReceivables)}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">Owed to company by customers</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200 shadow-2xs">
+            <ArrowDownLeft className="w-6 h-6 stroke-[2]" />
+          </div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Supplier Payables</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-rose-600 mt-1 truncate" title={formatCurrency(totalPayables)}>{formatCurrency(totalPayables)}</p>
-          <p className="text-[10px] text-slate-400 mt-1 truncate">Owed by company to vendors</p>
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-rose-300 transition-all min-w-0 flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">Supplier Payables</p>
+            <p className="text-2xl sm:text-3xl font-black font-mono text-rose-700 mt-1 truncate" title={formatCurrency(totalPayables)}>{formatCurrency(totalPayables)}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">Owed by company to vendors</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200 shadow-2xs">
+            <ArrowUpRight className="w-6 h-6 stroke-[2]" />
+          </div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] min-w-0">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">Net Working Capital</p>
-          <p className="text-xl sm:text-2xl font-bold font-mono text-indigo-700 mt-1 truncate" title={formatCurrency(netWorkingCapital)}>{formatCurrency(netWorkingCapital)}</p>
-          <p className="text-[10px] text-slate-400 mt-1 truncate">(Liquidity + Receivables - Payables)</p>
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-purple-300 transition-all min-w-0 flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider truncate">Net Working Capital</p>
+            <p className="text-2xl sm:text-3xl font-black font-mono text-purple-900 mt-1 truncate" title={formatCurrency(netWorkingCapital)}>{formatCurrency(netWorkingCapital)}</p>
+            <p className="text-xs text-slate-600 font-semibold mt-1 truncate">(Liquidity + Dues - Debts)</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 border border-purple-200 shadow-2xs">
+            <Building2 className="w-6 h-6 stroke-[2]" />
+          </div>
         </div>
       </div>
 
